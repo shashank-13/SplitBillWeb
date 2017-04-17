@@ -3,8 +3,8 @@
 var mongoose=require('mongoose');
 
 var userSchema=mongoose.Schema({
-	macAddress : {type :String,index:{unique : true}},
-	userToken : {type : String, index: {unique:true}}
+	macAddress : {type :String,index:{unique : true},upsert : true},
+	userToken : {type : String, index: {unique:true},upsert : true}
 
 });
 
