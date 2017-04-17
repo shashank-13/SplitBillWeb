@@ -1,5 +1,6 @@
 var admin = require('firebase-admin');
 var token=require('../database/token.js');
+var notify=require('../database/notification.js');
 
 module.exports={
 index:function(req,res)
@@ -27,12 +28,13 @@ res.send('Message Deliverd')
 },
 test:function(req,res)
 {
-    token.find({macAddress :'fuckAll'},function(err,users)
+	var temp_group='mygroup'
+    notify.find({groupName:temp_group},function(err,users)
     {
       users.forEach(function(user)
       {
-        console.log(user.macAddress);
-        console.log(user.userToken);
+        console.log(user.groupName);
+        console.log(user.notificationKey);
       });
     });
 	res.send('Database Test Completed');

@@ -1,5 +1,5 @@
 var token=require('../database/token.js');
-var key=require('../database/notification.js');
+var notify=require('../database/notification.js');
 var request=require('request');
 
 module.exports={
@@ -27,15 +27,13 @@ if(req.body.group && req.body.token)
 {
 	var answer="null";
 
-	key.find({groupName:req.body.group},function(err,user)
+	notify.find({groupName:req.body.group},function(err,user)
     {
     	if (err)
     		throw err;
-
       answer=user.groupName;
-    });
 
-    if(answer==="null")
+          if(answer==="null")
     {
 	    var API_KEY='key=AIzaSyDWaNecbKKuLP9ndQDMMYPLLrtawaN0Fxk';
 	   	var SENDER_ID='178770510313';
@@ -62,41 +60,59 @@ if(req.body.group && req.body.token)
 	    var read_key=JSON.parse(body);
 	    if(read_key.hasOwnProperty('notification_key')){
 	    	console.log('Result succesfull');
-	    	var newKey= key(groupName:req.body.group,notificationKey:read_key
-	    		['notification_key']);
+	    	var newKey= key({groupName:req.body.group,notificationKey:read_key
+	    		['notification_key']});
 	    	newKey.save(function(err,record)
 	    	{
-	    		if err
+	    		if (err)
 	    			throw err;
 	    		console.log('New Group Created succesfully');
 	    		res.status(201).json(read_key);
 	    	});
 
 				}
-	    res.json(JSON.parse(body));
+	    //res.json(JSON.parse(body));
 	}
 			    );
 
 	   
 }
-    }
     else
     {
     	res.json({notification_key:"null"});
     }
-},
-update:function(req,res)
+
+
+    });
+
+
+}
+
+}
+,
+joinGroup:function(req,res)
 {
 	if(req.body.group && req.body.token)
 	{
 		var answer="null";
-		key.find(groupName:req.body.group,function(err,user)
-		{
-			answer=user.groupName;
-		});
+		var key_notification;
+		var search = req.body.group;
 
-		if(answer==="null")
+		console.log('Before Search '+search);
+
+		notify.findOne({groupName:search},function(err,user)
 		{
+			console.log(user);
+			answer=user.groupName;
+		    console.log(user.groupName)
+			console.log(user.notificationKey)
+			key_notification=user.notificationKey;
+
+			console.log('Notification key  '+key_notification);
+
+					if(answer==="null")
+		{
+			console.log('Early Return');
 			res.json({notification_key:"null"});
 		}
 		else
@@ -106,6 +122,7 @@ update:function(req,res)
 
 	   	var json={operation: "add",
 	             notification_key_name: req.body.group,
+	             notification_key:key_notification,
 	             registration_ids:[req.body.token]
 	             };
 
@@ -127,14 +144,18 @@ update:function(req,res)
 	    if(read_key.hasOwnProperty('notification_key')){
 	    	console.log('Result succesfull');
 	    	
-	    		res.status(201).json(read_key);
-	   
-
+	    	res.status(201).json(read_key);
 				}
-	    res.json(JSON.parse(body));
+				else
+				{
+					console.log('Result not succesfull');
+					 res.json(JSON.parse(body));
+				}
+	   
 	}
 			    );
 		}
+		});
 	}
 }
 };

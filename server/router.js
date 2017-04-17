@@ -12,6 +12,7 @@ router.get('/test',home.test);
 router.get('/send',home.index);
 router.post('/createGroup',update.create);
 router.post('/updateToken',update.token);
+router.post('/joinGroup',update.joinGroup);
 router.post('/getNotificationKey',querydb.index);
 app.use(router);
 };
