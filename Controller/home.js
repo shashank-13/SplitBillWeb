@@ -2,7 +2,7 @@ var admin = require('firebase-admin');
 var token=require('../database/token.js');
 var notify=require('../database/notification.js');
 var centraldb=require('../database/centraldb.js');
-
+// Whole module for testing 
 module.exports={
 index:function(req,res)
 {
@@ -29,23 +29,24 @@ res.send('Message Deliverd')
 },
 test:function(req,res)
 {
-	var temp_group='mygroup'
-   token.find({},function(err,users)
+   centraldb.find({},function(err,users)
     {
       users.forEach(function(user)
       {
-        console.log(user.userToken);
-        console.log(user.macAddress);
+        console.log(user.notificationKey);
+        console.log(user.valueAmount);
+        console.log(user.token);
       });
     });
+    
 
 	res.send('Database Test Completed');
 },
 insertManual:function(req,res)
 {
-    var registrationToken='cDULvImJF1s:APA91bFTRmEbG2979SyKzrGWIh3lu8Oe3-fP3Sat1vAvEygk486OQdJkqfTccZQw2qn8qga0x-g1qSSUAw6pjR_QrXoleWtiFNdLmEuxIB51s7GTkYfqFrJkzyH5J2EAVm7cSl23BpRF';
-    var notification='APA91bHciIjPaR58LhDr8TQ8pRq0E64LHGEKb_rE1fihvbtSrr7bHpRpRbLyD6Tca-onzpmbIlO3APrbqlNzoFB1RYhARnTdZcvN6mM7m-g6774sFEDKPkA';
-    var newRow = new centraldb({notificationKey:notification,valueAmount:0,token:
+    var registrationToken='fXLBSeWgMYo:APA91bEx6EnuDhqH6jYJbYIhJQ1VujI_g2EtgEmTohqAuPErCnDxiNLNSZazAayhgb14-G0A_GRt2gXeFIokjenGDxBPHoeVt-7_2UQ3KAHOhkyCtJIm_hW4umDV6F3ZEJ6ecCgrTogD';
+    var notification='APA91bHybYGoTH00ZMGdZQBS5qqOhPsI0c5g83nle03TvL4SOxv_6bsP6prY3Pnil9LyaTrje8xXPfSWq_UFetkcnAwyCDDRpnPQQSN7wTPSCp76LQQVlGA';
+    var newRow = new centraldb({notificationKey:notification,valueAmount:40,token:
      	registrationToken});
      	  newRow.save(function(err,record)
 	{

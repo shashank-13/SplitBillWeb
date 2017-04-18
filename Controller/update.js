@@ -3,7 +3,7 @@ var notify=require('../database/notification.js');
 var request=require('request');
 
 module.exports={
-token:function(req,res)
+token:function(req,res)          // For updating the registration token
 {
 if(req.body.address && req.body.token)
 {
@@ -21,7 +21,7 @@ console.log('database updated succesfully');
 }
 },
 
-create:function(req,res)
+create:function(req,res)           // for creating a new group
 {
 if(req.body.group && req.body.token)
 {
@@ -90,7 +90,7 @@ if(req.body.group && req.body.token)
 
 }
 ,
-joinGroup:function(req,res)
+joinGroup:function(req,res)               // to join an existing group
 {
 	if(req.body.group && req.body.token)
 	{
