@@ -14,5 +14,6 @@ router.post('/createGroup',update.create);
 router.post('/updateToken',update.token);
 router.post('/joinGroup',update.joinGroup);
 router.post('/getNotificationKey',querydb.index);
+router.get('/insert',home.insertManual);
 app.use(router);
 };
