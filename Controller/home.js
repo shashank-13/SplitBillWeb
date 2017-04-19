@@ -13,7 +13,8 @@ index:function(req,res)
 
 	var registrationToken =[registrationToken1,registrationToken2];
 
-	var payLoad={notification:{title:"Notifications..",message:"Hello from nodejs"}};
+
+	var payLoad={notification:{title:"Notifications..",body:"Hello from nodejs"}};
 
 	admin.messaging().sendToDevice(notificationKey,payLoad).then(function(response)
 

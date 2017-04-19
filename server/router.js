@@ -4,6 +4,7 @@ var router=express.Router();
 var home = require('../Controller/home');
 var update=require('../Controller/update');
 var querydb=require('../Controller/queryfb');
+var updatedb=require('../Controller/updatedb');
 
 
 module.exports=function(app)
@@ -15,5 +16,6 @@ router.post('/updateToken',update.token);
 router.post('/joinGroup',update.joinGroup);
 router.post('/updateVal',querydb.index);
 router.get('/insert',home.insertManual);
+router.post('/updatedb',updatedb.index);
 app.use(router);
 };

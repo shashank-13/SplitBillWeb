@@ -8,4 +8,6 @@ var keySchema=mongoose.Schema({
   token:{type:String,upsert:true}
 });
 
+keySchema.index({ notificationKey: 1, valueAmount: 1,token :1 }, { unique: true });
+
 module.exports=mongoose.model('centraldb',keySchema);
