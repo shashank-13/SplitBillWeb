@@ -2,31 +2,32 @@ var admin = require('firebase-admin');
 var token=require('../database/token.js');
 var notify=require('../database/notification.js');
 var centraldb=require('../database/centraldb.js');
+var request=require('request');
 // Whole module for testing 
 module.exports={
 index:function(req,res)
 {
-	var registrationToken1='cDULvImJF1s:APA91bFTRmEbG2979SyKzrGWIh3lu8Oe3-fP3Sat1vAvEygk486OQdJkqfTccZQw2qn8qga0x-g1qSSUAw6pjR_QrXoleWtiFNdLmEuxIB51s7GTkYfqFrJkzyH5J2EAVm7cSl23BpRF';
-	var registrationToken2='fXLBSeWgMYo:APA91bEx6EnuDhqH6jYJbYIhJQ1VujI_g2EtgEmTohqAuPErCnDxiNLNSZazAayhgb14-G0A_GRt2gXeFIokjenGDxBPHoeVt-7_2UQ3KAHOhkyCtJIm_hW4umDV6F3ZEJ6ecCgrTogD';
-    
-    var notificationKey = "APA91bHX7syhgU7nHZJyILWs0H-mPCbI7Zo3OT2WE57e5P-gCJAVK7WCkXCxDnYZGQbm3m4iurwjlZwjWCgWo3y8OpvsZGfwKjVvCCj3nxQ2ld_mVGEkmmQ";
+	var API_KEY='AIzaSyDWaNecbKKuLP9ndQDMMYPLLrtawaN0Fxk';
+   	var SENDER_ID='178770510313';
 
-	var registrationToken =[registrationToken1,registrationToken2];
+	let options = {
+    url: 'https://android.googleapis.com/gcm/notification?notification_key_name=mygroup',
+    method: 'GET',
+    headers: {
+        "Content-Type": "application/json",
+        "Authorization": "key=" + API_KEY,
+        "project_id": SENDER_ID
+    }
+};
 
-
-	var payLoad={notification:{title:"Notifications..",body:"Hello from nodejs"}};
-
-	admin.messaging().sendToDevice(notificationKey,payLoad).then(function(response)
-
-	{
-		console.log("Successfully message ",response);
-	})
-	.catch(function(error)
-	{
-     console.log('Error Sending message'+error);
-	});
-
-res.send('Message Deliverd')
+request(options, function (error, response, body) {
+    if (!error) {
+        res.json(body);
+    }
+    else {
+        res.json(error);
+    }
+});
 },
 test:function(req,res)
 {
@@ -78,16 +79,50 @@ test2:function(req,res)
 },
 insertvalue:function(req,res)
 {
-var key1,key2;
+var key1,key2,key3,key4;
 	key1='APA91bHybYGoTH00ZMGdZQBS5qqOhPsI0c5g83nle03TvL4SOxv_6bsP6prY3Pnil9LyaTrje8xXPfSWq_UFetkcnAwyCDDRpnPQQSN7wTPSCp76LQQVlGA';
 	key2='APA91bHciIjPaR58LhDr8TQ8pRq0E64LHGEKb_rE1fihvbtSrr7bHpRpRbLyD6Tca-onzpmbIlO3APrbqlNzoFB1RYhARnTdZcvN6mM7m-g6774sFEDKPkA';
+	key3='APA91bF3vYv61Mtys2jJMb0gw_2UeEzh65wrogzYexpw6lijR1ec6Li5BXvop6RoLuKVJ8s5j_Gi2Ub6JMGz6JSlLWuQTJwzjxGqC-lQ_nw0w_CGuBQ-gsc';
+	key4='APA91bGsWEEJwXR6OcXrV7as-KsLSOlRDHsBj6gUK-eq5qyydnj6voqjEuRLZqCu5NSk81hqBWR3NuiB4EEZ2vRHSElPiVlGXd1lI5Eq4ho0_vTRvHoZ7yI';
+
+
 	var token1='ccUcMskEJYg:APA91bH-_cDWHJNjutrY7_nvh8Ra8kp-41z_-ml6IAXDUCmHLvQ8TbOEk5AG9nt4r9Q26fPXMjKUj0B3FFx1pKi43nLrwMlwxPqcbAsR6ykI6G6ZriJooU8uKngNoKbgpBdk83qbVohl';
 	var token2='fXLBSeWgMYo:APA91bEx6EnuDhqH6jYJbYIhJQ1VujI_g2EtgEmTohqAuPErCnDxiNLNSZazAayhgb14-G0A_GRt2gXeFIokjenGDxBPHoeVt-7_2UQ3KAHOhkyCtJIm_hW4umDV6F3ZEJ6ecCgrTogD';
 
-	centraldb.update({notificationKey:key1,token:token1},{$set:{notificationKey:key1,token:token1,valueAmount:70}},{upsert:true,multi:true},function()
+	/*centraldb.update({notificationKey:key1,token:token1},{$set:{notificationKey:key1,token:token1,valueAmount:70}},{upsert:true,multi:true},function()
 	{
 		console.log('Notification updated');
-	});
+	});*/
+
+	centraldb.find(  {notificationKey : key1},function(err, users) { 
+	   if(!err){   
+	   users.forEach(function(user)
+		{
+			user.notificationKey=key3;
+			 user.save(function(err,user)
+			 	{    
+			     console.log('User saved:', user);
+			 });
+		});  
+	    }  
+	                    } 
+
+	    );
+
+	centraldb.find(  {notificationKey : key2},function(err, users) { 
+	   if(!err){   
+	   users.forEach(function(user)
+		{
+			user.notificationKey=key4;
+			 user.save(function(err,user)
+			 	{    
+			     console.log('User saved:', user);
+			 });
+		});  
+	    }  
+	                    } 
+
+	    );
 
 },
 insertgroup:function(req,res)
@@ -95,20 +130,20 @@ insertgroup:function(req,res)
 	var group1,group2,key1,key2;
 	group1='mygroup';
 	group2='mahisbathan';
-	key1='APA91bHybYGoTH00ZMGdZQBS5qqOhPsI0c5g83nle03TvL4SOxv_6bsP6prY3Pnil9LyaTrje8xXPfSWq_UFetkcnAwyCDDRpnPQQSN7wTPSCp76LQQVlGA';
-	key2='APA91bHciIjPaR58LhDr8TQ8pRq0E64LHGEKb_rE1fihvbtSrr7bHpRpRbLyD6Tca-onzpmbIlO3APrbqlNzoFB1RYhARnTdZcvN6mM7m-g6774sFEDKPkA';
+	key1='APA91bF3vYv61Mtys2jJMb0gw_2UeEzh65wrogzYexpw6lijR1ec6Li5BXvop6RoLuKVJ8s5j_Gi2Ub6JMGz6JSlLWuQTJwzjxGqC-lQ_nw0w_CGuBQ-gsc';
+	key2='APA91bGsWEEJwXR6OcXrV7as-KsLSOlRDHsBj6gUK-eq5qyydnj6voqjEuRLZqCu5NSk81hqBWR3NuiB4EEZ2vRHSElPiVlGXd1lI5Eq4ho0_vTRvHoZ7yI';
 	var token1='ccUcMskEJYg:APA91bH-_cDWHJNjutrY7_nvh8Ra8kp-41z_-ml6IAXDUCmHLvQ8TbOEk5AG9nt4r9Q26fPXMjKUj0B3FFx1pKi43nLrwMlwxPqcbAsR6ykI6G6ZriJooU8uKngNoKbgpBdk83qbVohl';
 	var token2='fXLBSeWgMYo:APA91bEx6EnuDhqH6jYJbYIhJQ1VujI_g2EtgEmTohqAuPErCnDxiNLNSZazAayhgb14-G0A_GRt2gXeFIokjenGDxBPHoeVt-7_2UQ3KAHOhkyCtJIm_hW4umDV6F3ZEJ6ecCgrTogD';
 
-	notify.update({groupName:group1},{$set:{groupName:group1,notificationKey:key2}},{upsert:true,multi:true},function()
+	notify.update({groupName:group1},{$set:{groupName:group1,notificationKey:key1}},{upsert:true,multi:true},function()
 	{
 		console.log('Notification updated');
 	});
 
-	/*notify.update({groupName:group2},{$set:{groupName:group2,notificationKey:key2}},{upsert:true,multi:true},function()
+	notify.update({groupName:group2},{$set:{groupName:group2,notificationKey:key2}},{upsert:true,multi:true},function()
 	{
 		console.log('Notification updated');
-	});*/
+	});
 
 },
 inserttoken:function(req,res)
