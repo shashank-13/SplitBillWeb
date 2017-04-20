@@ -13,15 +13,20 @@ router.get('/test',home.test);
 router.get('/testtoken',home.test1);
 router.get('/testnotify',home.test2);
 router.get('/deletedata',home.deletedata);
-router.get('/inserttoken',home.inserttoken);
+router.get('/inserttoken',home.inserttoken);       // For testing purposes 
 router.get('/insertgroup',home.insertgroup);
 router.get('/insertvalue',home.insertvalue);
 router.get('/send',home.index);
-router.post('/createGroup',update.create);
-router.post('/updateToken',update.token);
-router.post('/joinGroup',update.joinGroup);
-router.post('/updateVal',querydb.index);
 router.get('/insert',home.insertManual);
-router.post('/updatedb',updatedb.index);
+
+router.post('/createGroup',update.create);
+router.post('/updateToken',update.token);        // For Token and group formation
+router.post('/joinGroup',update.joinGroup);
+
+router.post('/updateVal',querydb.index);
+
+
+
+router.post('/updatedb',updatedb.index);           // For updating expenses
 app.use(router);
 };
