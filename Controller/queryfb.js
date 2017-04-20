@@ -8,6 +8,8 @@ index:function(req,res)
 
 	var data=req.body;
 
+	console.log(data);
+
 	var token=req.headers['x-access-token'];  // user token 
 
 	if(data && token)
@@ -74,3 +76,7 @@ index:function(req,res)
 	}
 }
 };
+
+//esXv8Mgk7Fo:APA91bFlEIJokGluWIVkHZwvBl75Cv0LxUGouxSv2x1g3hBZ6_mSFZwvr3fq4xjN8YNgv7KKG7bdUusmEkxVDF_eAF6XHBDAizlBXQT0N0yMxLzwgdeLW-UiEgoK91mwy6KM2SNgrpHJ
+
+//esXv8Mgk7Fo:APA91bFlEIJokGluWIVkHZwvBl75Cv0LxUGouxSv2x1g3hBZ6_mSFZwvr3fq4xjN8YNgv7KKG7bdUusmEkxVDF_eAF6XHBDAizlBXQT0N0yMxLzwgdeLW-UiEgoK91mwy6KM2SNgrpHJ

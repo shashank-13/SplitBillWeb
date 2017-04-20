@@ -7,17 +7,12 @@ token:function(req,res)          // For updating the registration token
 {
 if(req.body.address && req.body.token)
 {
-	var newToken = new token({macAddress:req.body.address,
-		userToken:req.body.token
-	});
-	newToken.save(function(err,record)
-{
-if(err)
-throw err;
-console.log('database updated succesfully');
-  res.status(201).json({message : "Token updated succesfully"});
-});
+console.log(req.body.token);
 
+token.update({macAddress:req.body.address},{$set:{macAddress:req.body.address,userToken:req.body.token}},{upsert:true ,multi:true},function()
+{
+console.log('Token updated Successfully');
+});
 }
 },
 
@@ -25,65 +20,69 @@ create:function(req,res)           // for creating a new group
 {
 if(req.body.group && req.body.token)
 {
-	var answer="null";
+var answer="null";
 
-	notify.find({groupName:req.body.group},function(err,user)
-    {
-    	if (err)
-    		throw err;
-      answer=user.groupName;
+notify.find({groupName:req.body.group},function(err,user)
+{
+	if (err)
+		throw err;
+	if(user)
+  answer=user.groupName;
 
-          if(answer==="null")
-    {
-	    var API_KEY='key=AIzaSyDWaNecbKKuLP9ndQDMMYPLLrtawaN0Fxk';
-	   	var SENDER_ID='178770510313';
+      if(answer==="null")
+{
+    var API_KEY='key=AIzaSyDWaNecbKKuLP9ndQDMMYPLLrtawaN0Fxk';
+   	var SENDER_ID='178770510313';
 
-	   	var json={operation: "create",
-	             notification_key_name: req.body.group,
-	             registration_ids:[req.body.token]
-	             };
+   	var json={operation: "create",
+             notification_key_name: req.body.group,
+             registration_ids:[req.body.token]
+             };
 
-	    var formData=JSON.stringify(json);
+    var formData=JSON.stringify(json);
 
-	    request({
-	    	headers:{
-			    	'Content-Type':'application/json',
-					'Authorization':API_KEY,
-					'project_id':SENDER_ID
-				},
-				uri:'https://android.googleapis.com/gcm/notification',
-				body:formData,
-				method:'POST',
-			    },
-		function (error, response, body){
-	     console.log(body);
-	    var read_key=JSON.parse(body);
-	    if(read_key.hasOwnProperty('notification_key')){
-	    	console.log('Result succesfull');
-	    	var newKey= key({groupName:req.body.group,notificationKey:read_key
-	    		['notification_key']});
-	    	newKey.save(function(err,record)
-	    	{
-	    		if (err)
-	    			throw err;
-	    		console.log('New Group Created succesfully');
-	    		res.status(201).json(read_key);
-	    	});
+    request({
+    	headers:{
+		    	'Content-Type':'application/json',
+				'Authorization':API_KEY,
+				'project_id':SENDER_ID
+			},
+			uri:'https://android.googleapis.com/gcm/notification',
+			body:formData,
+			method:'POST',
+		    },
+	function (error, response, body){
+     console.log(body);
+    var read_key=JSON.parse(body);
+    if(read_key.hasOwnProperty('notification_key')){
 
-				}
-	    //res.json(JSON.parse(body));
-	}
-			    );
+    	console.log('Result succesfull');
+    	var newKey= read_key['notification_key'];
+ notify.update({groupName:req.body.group},{$set:{groupName:req.body.group,notificationKey:newKey}},{upsert:true,multi:true},function()
+{
+	console.log('Notification updated');
+	res.status(201).json(read_key);
+});
 
-	   
+			}
+			else
+			{
+				
+				res.json({notification_key:"null"});
+			}
+    //res.json(JSON.parse(body));
 }
-    else
-    {
-    	res.json({notification_key:"null"});
-    }
+		    );
+
+   
+}
+else
+{
+	res.json({notification_key:"null"});
+}
 
 
-    });
+});
 
 
 }
@@ -92,70 +91,71 @@ if(req.body.group && req.body.token)
 ,
 joinGroup:function(req,res)               // to join an existing group
 {
-	if(req.body.group && req.body.token)
+if(req.body.group && req.body.token)
+{
+	var answer="null";
+	var key_notification;
+	var search = req.body.group;
+	var init_token=req.body.token;
+
+	console.log('Before Search '+search);
+
+	notify.findOne({groupName:search},function(err,user)
 	{
-		var answer="null";
-		var key_notification;
-		var search = req.body.group;
+		console.log(user);
+		answer=user.groupName;
+	    console.log(user.groupName)
+		console.log(user.notificationKey)
+		key_notification=user.notificationKey;
 
-		console.log('Before Search '+search);
+		console.log('Notification key  '+key_notification);
 
-		notify.findOne({groupName:search},function(err,user)
-		{
-			console.log(user);
-			answer=user.groupName;
-		    console.log(user.groupName)
-			console.log(user.notificationKey)
-			key_notification=user.notificationKey;
+		if(answer==="null")
+	{
+		console.log('Early Return');
+		res.json({notification_key:"null"});
+	}
+	else
+	{
+	var API_KEY='key=AIzaSyDWaNecbKKuLP9ndQDMMYPLLrtawaN0Fxk';
+   	var SENDER_ID='178770510313';
 
-			console.log('Notification key  '+key_notification);
+   	var json={operation: "add",
+             notification_key_name: req.body.group,
+             notification_key:key_notification,
+             registration_ids:[req.body.token]
+             };
 
-					if(answer==="null")
-		{
-			console.log('Early Return');
-			res.json({notification_key:"null"});
-		}
-		else
-		{
-		var API_KEY='key=AIzaSyDWaNecbKKuLP9ndQDMMYPLLrtawaN0Fxk';
-	   	var SENDER_ID='178770510313';
+    var formData=JSON.stringify(json);
 
-	   	var json={operation: "add",
-	             notification_key_name: req.body.group,
-	             notification_key:key_notification,
-	             registration_ids:[req.body.token]
-	             };
-
-	    var formData=JSON.stringify(json);
-
-	    request({
-	    	headers:{
-			    	'Content-Type':'application/json',
-					'Authorization':API_KEY,
-					'project_id':SENDER_ID
-				},
-				uri:'https://android.googleapis.com/gcm/notification',
-				body:formData,
-				method:'POST',
-			    },
+    request({
+    	headers:{
+		    	'Content-Type':'application/json',
+				'Authorization':API_KEY,
+				'project_id':SENDER_ID
+			},
+			uri:'https://android.googleapis.com/gcm/notification',
+			body:formData,
+			method:'POST',
+		    },
 		function (error, response, body){
+
 	     console.log(body);
 	    var read_key=JSON.parse(body);
 	    if(read_key.hasOwnProperty('notification_key')){
 	    	console.log('Result succesfull');
-	    	
 	    	res.status(201).json(read_key);
 				}
 				else
 				{
 					console.log('Result not succesfull');
-					 res.json(JSON.parse(body));
+					res.json({notification_key:"null"});
 				}
 	   
 	}
-			    );
-		}
-		});
+		    );
 	}
+	});
+}
 }
 };
