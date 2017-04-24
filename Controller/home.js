@@ -56,7 +56,8 @@ test1:function(req,res)
 		users.forEach(function(user)
 		{
 			console.log(user.macAddress);
-			console.log(user.userToken)
+			console.log(user.userToken);
+			console.log(user.user);
 		});
 	});
 
@@ -151,14 +152,15 @@ inserttoken:function(req,res)
 var token1='ccUcMskEJYg:APA91bH-_cDWHJNjutrY7_nvh8Ra8kp-41z_-ml6IAXDUCmHLvQ8TbOEk5AG9nt4r9Q26fPXMjKUj0B3FFx1pKi43nLrwMlwxPqcbAsR6ykI6G6ZriJooU8uKngNoKbgpBdk83qbVohl';
 var add1='64:cc:2e:2b:4f:c3';
 var add2='08:00:27:78:df:43';
-var temp='fuckoff';
+var user1='shashank singh';
+var user2='shashank kumar';
 var token2='fXLBSeWgMYo:APA91bEx6EnuDhqH6jYJbYIhJQ1VujI_g2EtgEmTohqAuPErCnDxiNLNSZazAayhgb14-G0A_GRt2gXeFIokjenGDxBPHoeVt-7_2UQ3KAHOhkyCtJIm_hW4umDV6F3ZEJ6ecCgrTogD';
-token.update({macAddress:add1},{$set:{macAddress:add1,userToken:token1}},{upsert:true ,multi:true},function()
+token.update({macAddress:add1},{$set:{macAddress:add1,userToken:token1,user:user1}},{upsert:true ,multi:true},function()
 {
 	console.log('Token updated Successfully');
 });
 
-token.update({macAddress:add2},{$set:{macAddress:add2,userToken:token2}},{upsert:true,multi:true},function()
+token.update({macAddress:add2},{$set:{macAddress:add2,userToken:token2,user:user2}},{upsert:true,multi:true},function()
 {
 	console.log('Token updated Successfully');
 });
