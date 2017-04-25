@@ -84,13 +84,13 @@ module.exports = {
                  console.log('Error Sending message'+error);
                 });
             console.log('Finished!');
-            res.status(201).json( {message : 'Successfully done'});
+            res.status(201).json( [{message : 'Successfully done'}]);
 
             });
         }
         else
         {
-            res.status(201).json({message:'null'});
+            res.status(201).json([{message:'null'}]);
         }
 
     }

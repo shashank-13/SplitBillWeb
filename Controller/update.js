@@ -1,17 +1,41 @@
 var token=require('../database/token.js');
 var notify=require('../database/notification.js');
 var request=require('request');
+var querydb = require('../database/centraldb.js');
 
 module.exports={
 token:function(req,res)          // For updating the registration token
 {
-if(req.body.address && req.body.token)
+if(req.body.address && req.body.token && req.body.name)
 {
 console.log(req.body.token);
+var prev="null";
 
-token.update({macAddress:req.body.address},{$set:{macAddress:req.body.address,userToken:req.body.token}},{upsert:true ,multi:true},function()
+token.findOne({macAddress:req.body.address},function(err,user)
 {
-console.log('Token updated Successfully');
+	if(!err)
+	{
+		if(user)
+		prev=user.userToken;
+		token.update({macAddress:req.body.address},{$set:{macAddress:req.body.address,userToken:req.body.token,user:req.body.name}},{upsert:true ,multi:true},function()
+			{
+			console.log('Token updated Successfully');
+			});
+
+		if(!(prev==="null"))
+		{
+			querydb.update({token:prev}, {
+                            $set: {
+                             token: req.body.token,
+                            }
+                        }, {
+                             upsert: true,
+                            multi: true
+                            }, function() {
+                                
+                    });
+		}
+	}
 });
 }
 },
