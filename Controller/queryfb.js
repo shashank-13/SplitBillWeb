@@ -18,8 +18,8 @@ index:function(req,res)
 
 	asyncLoop(data,function(item,next)    // looping through each group
 	{
-		var total_score,my_score,net_Score,count_obj;
-		total_score=my_score=net_Score=count_obj=0;
+		var total_score,my_score,net_Score;
+		total_score=my_score=net_Score=0;
 		var groupName;
 
 
@@ -32,24 +32,16 @@ index:function(req,res)
 	 		users.forEach(function(user)
 	      {
 
+	      	if(user.valueAmount>0)
 	        total_score+=user.valueAmount;
 	        if(user.token===token)
 	        	my_score+=user.valueAmount;
-	        count_obj++;
+	     
 	      });
-	 		if(count_obj==0)
-		{
-			var temp={total:total_score,current:my_score,net:net_Score,group:groupName};
+	 		
+			var temp={total:total_score,current:my_score,group:groupName};
 			result.push(temp);
-		}
-
-
-		else
-		{
-			net_Score=(my_score-(total_score/count_obj));
-			var temp={total:total_score,current:my_score,net:net_Score,group:groupName};
-			result.push(temp);
-		}
+			
 	 		next();
 		});
 		});

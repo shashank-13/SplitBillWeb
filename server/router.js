@@ -6,6 +6,7 @@ var update=require('../Controller/update');
 var querydb=require('../Controller/queryfb');
 var updatedb=require('../Controller/updatedb');
 var expensedb=require('../Controller/expense');
+var depend=require('../Controller/dependency');
 
 
 module.exports=function(app)
@@ -27,6 +28,8 @@ router.post('/joinGroup',update.joinGroup);
 router.post('/updateVal',querydb.index);
 
 router.post('/queryexpense',expensedb.index);
+
+router.post('/dependency',depend.index);
 
 
 
