@@ -30,6 +30,7 @@ router.post('/updateVal',querydb.index);
 router.post('/queryexpense',expensedb.index);
 
 router.post('/dependency',depend.index);
+router.post('/clearlist',depend.clear);
 
 
 
