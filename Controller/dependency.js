@@ -6,7 +6,12 @@ var asyncLoop = require('node-async-loop');
 module.exports={
 index : function(req,res)
 {
-	var global_group=req.body.group;
+	var data=req.body;
+	var global_group;
+	data.forEach(function(entry)
+	{
+		global_group=entry['group'];
+	});
 	if(global_group)
 	{
 		var result= new Array();
