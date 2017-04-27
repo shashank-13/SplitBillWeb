@@ -31,11 +31,10 @@ index:function(req,res)
 		{
 	 		users.forEach(function(user)
 	      {
-
-	      	if(user.valueAmount>0)
-	        total_score+=user.valueAmount;
-	        if(user.token===token)
+	      	 if(user.token===token)
 	        	my_score+=user.valueAmount;
+
+	        total_score+=Math.abs(user.valueAmount);
 	     
 	      });
 	 		

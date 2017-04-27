@@ -16,7 +16,7 @@ index:function(req,res)
    	var SENDER_ID='178770510313';
 
 	let options = {
-    url: 'https://android.googleapis.com/gcm/notification?notification_key_name=mygroup',
+    url: 'https://android.googleapis.com/gcm/notification?notification_key_name=mahisbathan',
     method: 'GET',
     headers: {
         "Content-Type": "application/json",
@@ -135,8 +135,8 @@ insertgroup:function(req,res)
 	var group1,group2,key1,key2;
 	group1='mygroup';
 	group2='mahisbathan';
-	key1='APA91bF3vYv61Mtys2jJMb0gw_2UeEzh65wrogzYexpw6lijR1ec6Li5BXvop6RoLuKVJ8s5j_Gi2Ub6JMGz6JSlLWuQTJwzjxGqC-lQ_nw0w_CGuBQ-gsc';
-	key2='APA91bGsWEEJwXR6OcXrV7as-KsLSOlRDHsBj6gUK-eq5qyydnj6voqjEuRLZqCu5NSk81hqBWR3NuiB4EEZ2vRHSElPiVlGXd1lI5Eq4ho0_vTRvHoZ7yI';
+	key1='APA91bHWrPGHBWLf5pIgst9jIFW7V3aiF61GVeppJHS-sujIHOJkbTZrebRB4rE8rDFC0bGE5aQZjs54wd7hvLdD75nXjqBez78S3Y0ZN7WG6lieSqF8GKc';
+	key2='APA91bGXlluoBdNDaKqhuFkN8M-meJNCjOHXeV1WZ98Z65fdQYK-nLmp-rwWGk07ttivhcWtPnAWV4hy4V1ydwCDUZcc57FWgqxc1Eb-1-BBPYR_0t5qfWQ';
 	var token1='ccUcMskEJYg:APA91bH-_cDWHJNjutrY7_nvh8Ra8kp-41z_-ml6IAXDUCmHLvQ8TbOEk5AG9nt4r9Q26fPXMjKUj0B3FFx1pKi43nLrwMlwxPqcbAsR6ykI6G6ZriJooU8uKngNoKbgpBdk83qbVohl';
 	var token2='fXLBSeWgMYo:APA91bEx6EnuDhqH6jYJbYIhJQ1VujI_g2EtgEmTohqAuPErCnDxiNLNSZazAayhgb14-G0A_GRt2gXeFIokjenGDxBPHoeVt-7_2UQ3KAHOhkyCtJIm_hW4umDV6F3ZEJ6ecCgrTogD';
 
@@ -186,20 +186,19 @@ insertManual:function(req,res)
   var group1,group2,key1,key2;
 	group1='mygroup';
 	group2='mahisbathan';
-	key1='APA91bF3vYv61Mtys2jJMb0gw_2UeEzh65wrogzYexpw6lijR1ec6Li5BXvop6RoLuKVJ8s5j_Gi2Ub6JMGz6JSlLWuQTJwzjxGqC-lQ_nw0w_CGuBQ-gsc';
-	key2='APA91bGsWEEJwXR6OcXrV7as-KsLSOlRDHsBj6gUK-eq5qyydnj6voqjEuRLZqCu5NSk81hqBWR3NuiB4EEZ2vRHSElPiVlGXd1lI5Eq4ho0_vTRvHoZ7yI';
-	var token1='ccUcMskEJYg:APA91bH-_cDWHJNjutrY7_nvh8Ra8kp-41z_-ml6IAXDUCmHLvQ8TbOEk5AG9nt4r9Q26fPXMjKUj0B3FFx1pKi43nLrwMlwxPqcbAsR6ykI6G6ZriJooU8uKngNoKbgpBdk83qbVohl';
-	var token2='fXLBSeWgMYo:APA91bEx6EnuDhqH6jYJbYIhJQ1VujI_g2EtgEmTohqAuPErCnDxiNLNSZazAayhgb14-G0A_GRt2gXeFIokjenGDxBPHoeVt-7_2UQ3KAHOhkyCtJIm_hW4umDV6F3ZEJ6ecCgrTogD';
+	key1='APA91bHWrPGHBWLf5pIgst9jIFW7V3aiF61GVeppJHS-sujIHOJkbTZrebRB4rE8rDFC0bGE5aQZjs54wd7hvLdD75nXjqBez78S3Y0ZN7WG6lieSqF8GKc';
+	key2='APA91bGXlluoBdNDaKqhuFkN8M-meJNCjOHXeV1WZ98Z65fdQYK-nLmp-rwWGk07ttivhcWtPnAWV4hy4V1ydwCDUZcc57FWgqxc1Eb-1-BBPYR_0t5qfWQ';
+	var token1='cy7jMGpzKnU:APA91bHFBOF2pbWPMh54e9q8v81i_Sud0UPeK1rHilPxozW8djtWfaXiR_LLGGkADjyqDSTYx1EoiD4rHnILgGuhZykM_ZEosFjr7P6N3fv_R7mFuHoKwZ9ptuUwVw2-KSqnKDahK5DU';
+	var token2='e_phmXNl-9A:APA91bFP6v4Q4dI4CETVk5TM5dfnKBCz0Gxspz8ZKDjADQKVL5en4Io1uyO7p0A5z51Ic80n_YYdtCD4CcX7mooWesGUIhlnSVjTRhF5XqKzcb67Rg5UafjZIIPkfCRRukkyA2aK2znp';
 
-	centraldb.update({notificationKey:key2,token:token1},{$set:{valueAmount:0,notificationKey:key2,token:token1}},{upsert:true,multi:true},function()
+	
+
+	centraldb.update({valueAmount:30},{$set:{valueAmount:30,notificationKey:key2,token:token1}},{upsert:true,multi:true},function()
 	{
 		console.log('Central database updated');
 	});
 
-	centraldb.update({notificationKey:key2,token:token2},{$set:{valueAmount:0,notificationKey:key2,token:token2}},{upsert:true,multi:true},function()
-	{
-		console.log('Central database updated');
-	});
+
 }
 
 

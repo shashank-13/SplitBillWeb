@@ -11,13 +11,25 @@ token:function(req,res)          // For updating the registration token
 	var result=[];
 	var global_data=req.body;
 	var global_add,global_name,global_token;
-	global_data.forEach(function(entry)
-	{
-		global_add=entry['address'];
-		global_name=entry['name'];
-		global_token=entry['token'];
-	});
-if(global_add && global_token)
+	asyncLoop(global_data,function(item,next)
+	{   
+		global_add=item['address'];
+		global_name=item['name'];
+		global_token=item['token'];
+		next();
+		},function(err)
+		{
+			if (err)
+		    {
+		        console.error('Error: ' + err.message);
+		        return;
+		    }
+		 console.log(global_data);
+	console.log(global_add);
+	console.log(global_name);
+	console.log(global_token);
+
+	if(global_add && global_token)
 {
 console.log(global_token);
 var prev="null";
@@ -78,6 +90,10 @@ token.findOne({macAddress:global_add},function(err,user)
 	}
 });
 }
+		    
+		});
+
+
 },
 tokenname:function(req,res)
 {
