@@ -3,11 +3,83 @@ var notify=require('../database/notification.js');
 var request=require('request');
 var querydb = require('../database/centraldb.js');
 var centraldb=require('../database/centraldb.js');
+var asyncLoop = require('node-async-loop');
 
 module.exports={
 token:function(req,res)          // For updating the registration token
 {
-if(req.body.address && req.body.token && req.body.name)
+	var result=[];
+	var global_data=req.body;
+	var global_add,global_name,global_token;
+	global_data.forEach(function(entry)
+	{
+		global_add=entry['address'];
+		global_name=entry['name'];
+		global_token=entry['token'];
+	});
+if(global_add && global_token)
+{
+console.log(global_token);
+var prev="null";
+
+token.findOne({macAddress:global_add},function(err,user)
+{
+	if(!err)
+	{
+		if(user)
+		prev=user.userToken;
+		token.update({macAddress:global_add},{$set:{macAddress:global_add,userToken:global_token,user:global_name}},{upsert:true ,multi:true},function()
+			{
+			console.log('Token updated Successfully');
+			});
+
+		if(!(prev==="null"))
+		{
+			querydb.update({token:prev}, {
+                            $set: {
+                             token: global_token,
+                            }
+                        }, {
+                             upsert: true,
+                            multi: true
+                            }, function() {
+
+           querydb.find({token:global_token},function(err,users)
+                            {
+                 asyncLoop(users,function(item,next)
+				{
+				
+					notify.findOne({notificationKey:item.notificationKey},function(err,user)
+					{
+						result.push({groupName:user.groupName,notificationKey:user.notificationKey});
+						next();
+					});
+
+				},function(err)
+		{
+			if (err)
+		    {
+		        console.error('Error: ' + err.message);
+		        return;
+		    }
+		 
+		    console.log('Finished!');
+		    res.status(201).json(result);
+		});
+                                
+                    });
+            });
+
+		}
+		else
+		{
+			res.status(201).json(result);
+		}
+	}
+});
+}
+},
+tokenname:function(req,res)
 {
 console.log(req.body.token);
 var prev="null";
@@ -38,9 +110,7 @@ token.findOne({macAddress:req.body.address},function(err,user)
 		}
 	}
 });
-}
 },
-
 create:function(req,res)           // for creating a new group
 {
 if(req.body.group && req.body.token)

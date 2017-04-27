@@ -24,6 +24,7 @@ router.get('/insert',home.insertManual);
 router.post('/createGroup',update.create);
 router.post('/updateToken',update.token);        // For Token and group formation
 router.post('/joinGroup',update.joinGroup);
+router.post('/updateName',update.tokenname);
 
 router.post('/updateVal',querydb.index);
 
