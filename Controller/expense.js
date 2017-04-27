@@ -14,11 +14,13 @@ var result= new Array();
 	{
 		asyncLoop(notification,function(item,next)
 		{
+			console.log(item);
 			centraldb.find({notificationKey:item['key']},function(err,users)
 			{
 				var list_array= new Array();
 				asyncLoop(users,function(item,next1)
 				{
+
 					token.findOne({userToken:item.token},function(err,user)
 					{
 						list_array.push(user.user);

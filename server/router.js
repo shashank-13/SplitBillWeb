@@ -31,6 +31,7 @@ router.post('/queryexpense',expensedb.index);
 
 router.post('/dependency',depend.index);
 router.post('/clearlist',depend.clear);
+router.post('/leavegroup',depend.leave);
 
 
 

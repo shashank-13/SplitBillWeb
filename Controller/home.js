@@ -3,6 +3,11 @@ var token=require('../database/token.js');
 var notify=require('../database/notification.js');
 var centraldb=require('../database/centraldb.js');
 var request=require('request');
+
+function makerequests(res)
+{
+	res.send('Database Test Completed');
+}
 // Whole module for testing 
 module.exports={
 index:function(req,res)
@@ -40,9 +45,8 @@ test:function(req,res)
         console.log(user.token);
       });
     });
-    
+    makerequests(res);
 
-	res.send('Database Test Completed');
 },
 test1:function(req,res)
 {
@@ -187,12 +191,12 @@ insertManual:function(req,res)
 	var token1='ccUcMskEJYg:APA91bH-_cDWHJNjutrY7_nvh8Ra8kp-41z_-ml6IAXDUCmHLvQ8TbOEk5AG9nt4r9Q26fPXMjKUj0B3FFx1pKi43nLrwMlwxPqcbAsR6ykI6G6ZriJooU8uKngNoKbgpBdk83qbVohl';
 	var token2='fXLBSeWgMYo:APA91bEx6EnuDhqH6jYJbYIhJQ1VujI_g2EtgEmTohqAuPErCnDxiNLNSZazAayhgb14-G0A_GRt2gXeFIokjenGDxBPHoeVt-7_2UQ3KAHOhkyCtJIm_hW4umDV6F3ZEJ6ecCgrTogD';
 
-	centraldb.update({notificationKey:key1},{$set:{valueAmount:0}},{upsert:true,multi:true},function()
+	centraldb.update({notificationKey:key2,token:token1},{$set:{valueAmount:0,notificationKey:key2,token:token1}},{upsert:true,multi:true},function()
 	{
 		console.log('Central database updated');
 	});
 
-	centraldb.update({notificationKey:key2},{$set:{valueAmount:0}},{upsert:true,multi:true},function()
+	centraldb.update({notificationKey:key2,token:token2},{$set:{valueAmount:0,notificationKey:key2,token:token2}},{upsert:true,multi:true},function()
 	{
 		console.log('Central database updated');
 	});

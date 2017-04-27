@@ -2,6 +2,7 @@ var token=require('../database/token.js');
 var notify=require('../database/notification.js');
 var request=require('request');
 var querydb = require('../database/centraldb.js');
+var centraldb=require('../database/centraldb.js');
 
 module.exports={
 token:function(req,res)          // For updating the registration token
@@ -85,7 +86,12 @@ notify.find({groupName:req.body.group},function(err,user)
  notify.update({groupName:req.body.group},{$set:{groupName:req.body.group,notificationKey:newKey}},{upsert:true,multi:true},function()
 {
 	console.log('Notification updated');
-	res.status(201).json(read_key);
+	centraldb.update({notificationKey:newKey,token:req.body.token},{$set:{valueAmount:0,notificationKey:newKey,token:req.body.token}},{upsert:true,multi:true},function()
+	{
+		console.log('Central database updated');
+		res.status(201).json(read_key);
+	});
+	
 });
 
 			}
@@ -167,8 +173,13 @@ if(req.body.group && req.body.token)
 	     console.log(body);
 	    var read_key=JSON.parse(body);
 	    if(read_key.hasOwnProperty('notification_key')){
-	    	console.log('Result succesfull');
+	    	var newKey= read_key['notification_key'];
+	    	centraldb.update({notificationKey:newKey,token:init_token},{$set:{valueAmount:0,notificationKey:newKey,token:init_token}},{upsert:true,multi:true},function()
+	{
+		console.log('Result succesfull');
 	    	res.status(201).json(read_key);
+	});
+	    	
 				}
 				else
 				{

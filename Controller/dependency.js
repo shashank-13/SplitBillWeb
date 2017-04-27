@@ -3,6 +3,8 @@ var notify=require('../database/notification.js');
 var centraldb=require('../database/centraldb.js');
 var asyncLoop = require('node-async-loop');
 var admin = require('firebase-admin');
+var request=require('request');
+
 
 module.exports={
 index : function(req,res)
@@ -79,5 +81,98 @@ clear:function(req,res)
 
 	}
 			
+},
+leave:function(req,res)
+{
+	var data=req.body.key;
+	var user_name=req.body.name;
+	var token=req.headers['x-access-token'];
+
+	if(data && user_name && token)
+	{
+		centraldb.remove({notificationKey:data,token:token},function(err)
+		{
+			if(!err)
+			{
+				console.log(user_name+" removed");
+				centraldb.count({notificationKey:data},function(err,c)
+				{
+					if(!err)
+					{
+						if(c==0)
+					{
+						notify.remove({notificationKey:data},function(err)
+						{
+							if(!err)
+							{
+								console.log('group deleted');
+								makeRequests(data,token,0,user_name,res);
+							}
+						});
+					}
+					else
+					{
+						makeRequests(data,token,1,user_name,res);
+					
+					}
+
+					}
+					
+				});
+			}
+		});
+	}
 }
 };
+
+function makeRequests(data,token,flag,user_name,res)
+{
+	console.log('Make reqs entered');
+
+	var API_KEY='key=AIzaSyDWaNecbKKuLP9ndQDMMYPLLrtawaN0Fxk';
+   	var SENDER_ID='178770510313';
+
+   	var json={operation: "remove",
+             notification_key:data,
+             registration_ids:[token]
+             };
+
+    var formData=JSON.stringify(json);
+
+    request({
+    	headers:{
+		    	'Content-Type':'application/json',
+				'Authorization':API_KEY,
+				'project_id':SENDER_ID
+			},
+			uri:'https://android.googleapis.com/gcm/notification',
+			body:formData,
+			method:'POST',
+		    },
+		function (error, response, body){
+			console.log(body);
+			console.log(response);
+			if(flag==1)
+			{
+				var message=user_name+' left the group';
+				var payLoad={notification:{title:"Group Left!!",body:message}};
+                admin.messaging().sendToDevice(data,payLoad).then(function(response)
+
+                {
+                    console.log("Successfully message ",response);
+                })
+                .catch(function(error)
+                {
+                 console.log('Error Sending message'+error);
+                });
+                 res.status(201).json( {message : 'Successfully done'});
+			}
+
+			else
+			{
+				 res.status(201).json( {message : 'Successfully done'});
+			}
+ 
+	}
+		    );
+}
