@@ -25,6 +25,7 @@ router.post('/createGroup',update.create);
 router.post('/updateToken',update.token);        // For Token and group formation
 router.post('/joinGroup',update.joinGroup);
 router.post('/updateName',update.tokenname);
+router.post('/getAvatar',update.avatar);
 
 router.post('/updateVal',querydb.index);
 

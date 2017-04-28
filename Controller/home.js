@@ -8,7 +8,7 @@ function makerequests(res)
 {
 	res.send('Database Test Completed');
 }
-// Whole module for testing 
+// Whole module for testing
 module.exports={
 index:function(req,res)
 {
@@ -16,7 +16,7 @@ index:function(req,res)
    	var SENDER_ID='178770510313';
 
 	let options = {
-    url: 'https://android.googleapis.com/gcm/notification?notification_key_name=mahisbathan',
+    url: 'https://android.googleapis.com/gcm/notification?notification_key_name=genygroup',
     method: 'GET',
     headers: {
         "Content-Type": "application/json",
@@ -99,33 +99,33 @@ var key1,key2,key3,key4;
 		console.log('Notification updated');
 	});*/
 
-	centraldb.find(  {notificationKey : key1},function(err, users) { 
-	   if(!err){   
+	centraldb.find(  {notificationKey : key1},function(err, users) {
+	   if(!err){
 	   users.forEach(function(user)
 		{
 			user.notificationKey=key3;
 			 user.save(function(err,user)
-			 	{    
+			 	{
 			     console.log('User saved:', user);
 			 });
-		});  
-	    }  
-	                    } 
+		});
+	    }
+	                    }
 
 	    );
 
-	centraldb.find(  {notificationKey : key2},function(err, users) { 
-	   if(!err){   
+	centraldb.find(  {notificationKey : key2},function(err, users) {
+	   if(!err){
 	   users.forEach(function(user)
 		{
 			user.notificationKey=key4;
 			 user.save(function(err,user)
-			 	{    
+			 	{
 			     console.log('User saved:', user);
 			 });
-		});  
-	    }  
-	                    } 
+		});
+	    }
+	                    }
 
 	    );
 
@@ -191,9 +191,9 @@ insertManual:function(req,res)
 	var token1='cy7jMGpzKnU:APA91bHFBOF2pbWPMh54e9q8v81i_Sud0UPeK1rHilPxozW8djtWfaXiR_LLGGkADjyqDSTYx1EoiD4rHnILgGuhZykM_ZEosFjr7P6N3fv_R7mFuHoKwZ9ptuUwVw2-KSqnKDahK5DU';
 	var token2='e_phmXNl-9A:APA91bFP6v4Q4dI4CETVk5TM5dfnKBCz0Gxspz8ZKDjADQKVL5en4Io1uyO7p0A5z51Ic80n_YYdtCD4CcX7mooWesGUIhlnSVjTRhF5XqKzcb67Rg5UafjZIIPkfCRRukkyA2aK2znp';
 
-	
 
-	centraldb.update({valueAmount:30},{$set:{valueAmount:30,notificationKey:key2,token:token1}},{upsert:true,multi:true},function()
+
+	centraldb.update({valueAmount:-20},{$set:{valueAmount:0}},{upsert:true,multi:true},function()
 	{
 		console.log('Central database updated');
 	});
