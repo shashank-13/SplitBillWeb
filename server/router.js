@@ -14,6 +14,7 @@ module.exports=function(app)
 router.get('/test',home.test);
 router.get('/testtoken',home.test1);
 router.get('/testnotify',home.test2);
+router.get('/testdbname',home.test3);
 router.get('/deletedata',home.deletedata);
 router.get('/inserttoken',home.inserttoken);       // For testing purposes 
 router.get('/insertgroup',home.insertgroup);

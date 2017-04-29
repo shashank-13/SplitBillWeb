@@ -2,6 +2,7 @@ var token=require('../database/token.js');
 var notify=require('../database/notification.js');
 var centraldb=require('../database/centraldb.js');
 var asyncLoop = require('node-async-loop');
+var namedb=require('../database/username.js');
 
 module.exports={
 index:function (req,res) {
@@ -18,12 +19,11 @@ var result= new Array();
 			centraldb.find({notificationKey:item['key']},function(err,users)
 			{
 				var list_array= new Array();
-				asyncLoop(users,function(item,next1)
+				asyncLoop(users,function(item1,next1)
 				{
-
-					token.findOne({userToken:item.token},function(err,user)
+					namedb.findOne({userid:item1.userid},function(err,user)
 					{
-						list_array.push(user.user);
+						list_array.push(user.userName);
 						next1();
 					});
 				},

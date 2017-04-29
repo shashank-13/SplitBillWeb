@@ -3,6 +3,7 @@ var token=require('../database/token.js');
 var notify=require('../database/notification.js');
 var centraldb=require('../database/centraldb.js');
 var request=require('request');
+var namedb=require('../database/username.js');
 
 function makerequests(res)
 {
@@ -42,7 +43,7 @@ test:function(req,res)
       {
         console.log(user.notificationKey);
         console.log(user.valueAmount);
-        console.log(user.token);
+        console.log(user.userid);
       });
     });
     makerequests(res);
@@ -59,9 +60,8 @@ test1:function(req,res)
 	{
 		users.forEach(function(user)
 		{
-			console.log(user.macAddress);
+			console.log(user.userid);
 			console.log(user.userToken);
-			console.log(user.user);
 		});
 	});
 
@@ -82,6 +82,21 @@ test2:function(req,res)
 
 	res.send('Database modified succesfully');
 },
+test3:function(req,res)
+{
+
+	namedb.find({},function(err,users)
+	{
+		users.forEach(function(user)
+		{
+			console.log(user.userid);
+			console.log(user.userName);
+		});
+	});
+
+	res.send('Database modified succesfully');
+},
+
 insertvalue:function(req,res)
 {
 var key1,key2,key3,key4;

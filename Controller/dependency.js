@@ -4,6 +4,7 @@ var centraldb=require('../database/centraldb.js');
 var asyncLoop = require('node-async-loop');
 var admin = require('firebase-admin');
 var request=require('request');
+var namedb=require('../database/username.js');
 
 
 module.exports={
@@ -29,9 +30,9 @@ index : function(req,res)
 					var amount_val=0;
 					if(item.valueAmount >0 || item.valueAmount <0){
 						amount_val=item.valueAmount;
-					token.findOne({userToken:item.token},function(err,user)
+					namedb.findOne({userid:item.userid},function(err,user)
 					{
-						result.push({groupName:user.user,amount:amount_val});
+						result.push({groupName:user.userName,amount:amount_val});
 						next();
 					});
 				}
@@ -87,10 +88,11 @@ leave:function(req,res)
 	var data=req.body.key;
 	var user_name=req.body.name;
 	var token=req.headers['x-access-token'];
+	var userid=req.body.userid;
 
 	if(data && user_name && token)
 	{
-		centraldb.remove({notificationKey:data,token:token},function(err)
+		centraldb.remove({notificationKey:data,userid:userid},function(err)
 		{
 			if(!err)
 			{

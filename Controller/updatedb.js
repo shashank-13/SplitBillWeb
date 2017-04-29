@@ -3,6 +3,7 @@ var admin = require('firebase-admin');
 var token=require('../database/token.js');
 var notify=require('../database/notification.js');
 var asyncLoop = require('node-async-loop');
+var namedb=require('../database/username.js');
 
 
 module.exports = {
@@ -22,21 +23,24 @@ module.exports = {
             asyncLoop(data,function(item,next)
             {
 
-            token.findOne({user:item['key']},function(err,user)
+            namedb.findOne({userName:item['key']},function(err,user)
             {
                 if(err)
                     throw err;
-                var tokenVal = user.userToken;
-                querydb.findOne({notificationKey:notification,token:tokenVal},function(err,user)
+                var userid = user.userid;
+                querydb.findOne({notificationKey:notification,userid:userid},function(err,user)
                 {
                     if(!err)
                     {
-                        var prev=user.valueAmount;
+
+                        var prev=0;
+                        if(user)
+                            prev=user.valueAmount;
                         var new_amount = item['value']+prev;
-                        querydb.update({notificationKey:notification,token:tokenVal}, {
+                        querydb.update({notificationKey:notification,userid:userid}, {
                             $set: {
                              notificationKey: notification,
-                             token: tokenVal,
+                             userid:userid,
                              valueAmount: new_amount
                             }
                         }, {
@@ -46,21 +50,6 @@ module.exports = {
                                 next();
                              });
 
-                    }
-                    else
-                    {
-                        querydb.update({notificationKey:notification,token:tokenVal}, {
-                            $set: {
-                             notificationKey: notification,
-                             token: tokenVal,
-                             valueAmount: item['value']
-                            }
-                        }, {
-                             upsert: true,
-                            multi: true
-                             }, function() {
-                                next();
-                             });
                     }
 
                 });
