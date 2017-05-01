@@ -37,6 +37,7 @@ request(options, function (error, response, body) {
 },
 test:function(req,res)
 {
+	var global_id="CpjMN5mbUWb2EjkJVylLmv7Iz203";
    centraldb.find({},function(err,users)
     {
       users.forEach(function(user)
@@ -45,8 +46,9 @@ test:function(req,res)
         console.log(user.valueAmount);
         console.log(user.userid);
       });
+      makerequests(res);
     });
-    makerequests(res);
+    
 
 },
 test1:function(req,res)
@@ -188,11 +190,11 @@ token.update({macAddress:add2},{$set:{macAddress:add2,userToken:token2,user:user
 
 deletedata:function(req,res)
 {
-   token.remove({},function(err)
-   {
-   		if(err)
-   			throw err;
-   });
+	var key="UgEW2URrSiPvBRNIJSkUlBWaIai2";
+  centraldb.update({userid:key},{$set:{valueAmount:0}},{upsert:true,multi:true},function()
+	{
+		console.log('Central database updated');
+	});
    res.send('Database deleted succesfully');
 },
 
@@ -212,7 +214,6 @@ insertManual:function(req,res)
 	{
 		console.log('Central database updated');
 	});
-
 
 }
 

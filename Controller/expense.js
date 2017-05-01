@@ -23,8 +23,15 @@ var result= new Array();
 				{
 					namedb.findOne({userid:item1.userid},function(err,user)
 					{
-						list_array.push(user.userName);
+						if(user){
+							list_array.push(user.userName);
 						next1();
+						}
+						else
+						{
+							next1();
+						}
+						
 					});
 				},
 				function(err)
