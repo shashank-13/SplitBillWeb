@@ -1,4 +1,4 @@
 module.exports={
-var apiKey='key=AIzaSyDWaNecbKKuLP9ndQDMMYPLLrtawaN0Fxk';
-var SENDER_ID='178770510313';
+ apikey: 'key=AIzaSyDWaNecbKKuLP9ndQDMMYPLLrtawaN0Fxk',
+SENDER_ID :'178770510313'
 };
