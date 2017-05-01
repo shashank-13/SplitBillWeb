@@ -6,13 +6,14 @@ var centraldb=require('../database/centraldb.js');
 var asyncLoop = require('node-async-loop');
 var admin = require('firebase-admin');
 var namedb=require('../database/username.js');
+var serverKey=require('../data/serverkey.js');
 
 var result=[];
 
 function makeRequests(new_Token,notificationKey,groupName,next)
 {
-	var API_KEY='key=AIzaSyDWaNecbKKuLP9ndQDMMYPLLrtawaN0Fxk';
-	var SENDER_ID='178770510313';
+	var API_KEY=serverKey.apikey;
+	var SENDER_ID=serverKey.SENDER_ID;
 
 	var json={operation: "add",
          notification_key_name: groupName,
@@ -199,8 +200,8 @@ notify.findOne({groupName:req.body.group},function(err,user)
 
       if(answer==="")
 {
-    var API_KEY='key=AIzaSyDWaNecbKKuLP9ndQDMMYPLLrtawaN0Fxk';
-   	var SENDER_ID='178770510313';
+    var API_KEY=serverKey.apikey;
+   	var SENDER_ID=serverKey.SENDER_ID;
 
    	var json={operation: "create",
              notification_key_name: req.body.group,
@@ -292,8 +293,8 @@ if(req.body.group && req.body.token && req.body.userid)
 	}
 	else
 	{
-	var API_KEY='key=AIzaSyDWaNecbKKuLP9ndQDMMYPLLrtawaN0Fxk';
-   	var SENDER_ID='178770510313';
+	var API_KEY=serverKey.apikey;
+   	var SENDER_ID=serverKey.SENDER_ID;
 
    	var json={operation: "add",
              notification_key_name: req.body.group,

@@ -5,6 +5,7 @@ var asyncLoop = require('node-async-loop');
 var admin = require('firebase-admin');
 var request=require('request');
 var namedb=require('../database/username.js');
+var serverKey=require('../data/serverkey.js');
 
 
 module.exports={
@@ -131,8 +132,8 @@ function makeRequests(data,token,flag,user_name,res)
 {
 	console.log('Make reqs entered');
 
-	var API_KEY='key=AIzaSyDWaNecbKKuLP9ndQDMMYPLLrtawaN0Fxk';
-   	var SENDER_ID='178770510313';
+	var API_KEY=serverKey.apikey;
+   	var SENDER_ID=serverKey.SENDER_ID;
 
    	var json={operation: "remove",
              notification_key:data,
