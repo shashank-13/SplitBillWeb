@@ -12,6 +12,8 @@ var activity=require('../Controller/activities');
 
 module.exports=function(app)
 {
+
+router.get('/',home.index);
 router.get('/test',home.test);
 router.get('/testtoken',home.test1);
 router.get('/testnotify',home.test2);

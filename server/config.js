@@ -11,7 +11,7 @@ admin.initializeApp({
   databaseURL: "https://splitbill-455c8.firebaseio.com/"
 });
 
-mongoose.connect('mongodb://localhost:27017/moneydb');
+mongoose.connect('mongodb://shashank13_:QwertyU13@ds029381.mlab.com:29381/moneydb');
 mongoose.connection.on('open', function() { console.log('Mongoose connected.'); });
 
 module.exports = function(app)
