@@ -186,7 +186,7 @@ namedb.count({userName:req.body.name},function(err,c)
 },
 create:function(req,res)           // for creating a new group
 {
-if(req.body.group && req.body.token && req.body.userid)
+if(req.body.group && req.body.token && req.body.userid && req.body.avatar)
 {
 var answer="";
 
@@ -233,6 +233,17 @@ notify.findOne({groupName:req.body.group},function(err,user)
 	console.log('Notification updated');
 	centraldb.update({notificationKey:newKey,userid:req.body.userid},{$set:{valueAmount:0,notificationKey:newKey,userid:req.body.userid}},{upsert:true,multi:true},function()
 	{
+		var message=req.body.avatar+" created the group "+req.body.group;
+		var payLoad={notification:{title:"New Group",body:message}};
+                admin.messaging().sendToDevice(newKey,payLoad).then(function(response)
+
+                {
+                    console.log("Successfully message ",response);
+                })
+                .catch(function(error)
+                {
+                 console.log('Error Sending message'+error);
+                });
 		console.log('Central database updated');
 		res.status(201).json(read_key);
 	});
@@ -266,7 +277,7 @@ else
 ,
 joinGroup:function(req,res)               // to join an existing group
 {
-if(req.body.group && req.body.token && req.body.userid)
+if(req.body.group && req.body.token && req.body.userid && req.body.avatar)
 {
 	var answer="";
 	var key_notification="";
@@ -325,6 +336,17 @@ if(req.body.group && req.body.token && req.body.userid)
 	console.log('Notification updated');
 	centraldb.update({notificationKey:newKey,userid:req.body.userid},{$set:{valueAmount:0,notificationKey:newKey,userid:req.body.userid}},{upsert:true,multi:true},function()
 	{
+		var message=req.body.avatar+" joined the group "+req.body.group;
+		var payLoad={notification:{title:"Joined Group",body:message}};
+                admin.messaging().sendToDevice(newKey,payLoad).then(function(response)
+
+                {
+                    console.log("Successfully message ",response);
+                })
+                .catch(function(error)
+                {
+                 console.log('Error Sending message'+error);
+                });
 		console.log('Central database updated');
 		res.status(201).json(read_key);
 	});

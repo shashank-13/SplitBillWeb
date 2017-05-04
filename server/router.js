@@ -7,6 +7,7 @@ var querydb=require('../Controller/queryfb');
 var updatedb=require('../Controller/updatedb');
 var expensedb=require('../Controller/expense');
 var depend=require('../Controller/dependency');
+var activity=require('../Controller/activities');
 
 
 module.exports=function(app)
@@ -15,6 +16,7 @@ router.get('/test',home.test);
 router.get('/testtoken',home.test1);
 router.get('/testnotify',home.test2);
 router.get('/testdbname',home.test3);
+router.get('/testactivitydb',home.test4);
 router.get('/deletedata',home.deletedata);
 router.get('/inserttoken',home.inserttoken);       // For testing purposes 
 router.get('/insertgroup',home.insertgroup);
@@ -35,6 +37,9 @@ router.post('/queryexpense',expensedb.index);
 router.post('/dependency',depend.index);
 router.post('/clearlist',depend.clear);
 router.post('/leavegroup',depend.leave);
+
+router.post('/addactivity',activity.index);
+router.post('/getactivity',activity.find);
 
 
 
